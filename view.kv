@@ -1,0 +1,533 @@
+#:import Factory kivy.factory.Factory
+
+WindowManager:
+    canvas.before:
+        Rectangle:
+            source: 'bg.jpg'
+            pos: self.pos
+            size: self.size
+
+
+    WelcomeWindow:
+    RegisterWindow:
+    LoginWindow:
+    DashboardWindow:
+    GameWindow:
+    GameOverWindow:
+
+<WelcomeWindow>:
+    name: "welcome_window"
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: (200, 230, 200, 230)
+
+        MDLabel:
+            halign: 'center'
+            valign: 'middle'
+            font_size: "40dp"
+            color: '#FF5623'
+            text: 'Welcome to \n "The Game of Questions"'
+
+        BoxLayout:
+            padding: (40, 40, 40, 40)
+            spacing: 20
+
+            MDFlatButton:
+                text: "REGISTER"
+                font_size: '22dp'
+                size_hint_x: .4
+                md_bg_color: '#FF5623'
+                pos_hint: {'center_x': 0.5}
+                on_press:
+                    app.root.current = "register_window"
+                    root.manager.transition.direction = "left"
+
+            MDFlatButton:
+                text: "LOGIN"
+                font_size: '22dp'
+                size_hint_x: .4
+                md_bg_color: '#FF5623'
+                pos_hint: {'center_x': 0.5}
+                on_press:
+                    app.root.current = "login_window"
+                    root.manager.transition.direction = "left"
+
+<RegisterWindow>:
+    name: "register_window"
+
+    BoxLayout:
+        orientation: "vertical"
+        padding: (200, 0, 200, 0)
+        spacing: 5
+
+
+        MDTextField:
+            id: first_name
+            hint_text: "First name"
+            font_size: '20dp'
+            size_hint_x: .85
+            pos_hint: {'center_x': 0.5}
+            on_text: self.text = self.text.replace(" ", "")
+            write_tab: False
+
+        MDTextField:
+            id: last_name
+            hint_text: "Last name"
+            font_size: '20dp'
+            size_hint_x: .85
+            pos_hint: {'center_x': 0.5}
+            on_text: self.text = self.text.replace(" ", "")
+            write_tab: False
+
+        MDTextField:
+            id: email
+            hint_text: "Email"
+            font_size: '20dp'
+            size_hint_x: .85
+            pos_hint: {'center_x': 0.5}
+            on_text: self.text = self.text.replace(" ", "")
+            write_tab: False
+
+        MDTextField:
+            id: username
+            hint_text: "Username"
+            font_size: '20dp'
+            size_hint_x: .85
+            pos_hint: {'center_x': 0.5}
+            on_text: self.text = self.text.replace(" ", "")
+            write_tab: False
+
+        MDTextField:
+            id: passwd
+            hint_text: "Password"
+            password: True
+            font_size: '20dp'
+            size_hint_x: .85
+            pos_hint: {'center_x': 0.5}
+            on_text: self.text = self.text.replace(" ", "")
+            write_tab: False
+
+        MDTextField:
+            id: conf_passwd
+            hint_text: "Confirm password"
+            password: True
+            font_size: '20dp'
+            size_hint_x: .85
+            pos_hint: {'center_x': 0.5}
+            on_text: self.text = self.text.replace(" ", "")
+            write_tab: False
+
+        MDFlatButton:
+            text: "REGISTER"
+            font_size: '22dp'
+            size_hint_x: .4
+            md_bg_color: '#FF5623'
+            pos_hint: {'center_x': 0.5}
+            on_release:
+                root.manager.current = "dashboard_window" if root.check_registration_is_valid() else "register_window"
+                root.manager.transition.direction = "left"
+
+        MDFlatButton:
+            text: "BACK"
+            font_size: '22dp'
+            size_hint_x: .4
+            md_bg_color: '#ADACAC'
+            pos_hint: {'center_x': 0.5}
+            on_release:
+                root.manager.current = "welcome_window"
+                root.manager.transition.direction = "right"
+
+        MDLabel:
+            id: error
+            color: "red"
+            font_size: '20dp'
+            size_hint_x: .85
+            pos_hint: {'center_x': 0.5}
+            text: ""
+
+
+<LoginWindow>:
+    name: "login_window"
+
+    BoxLayout:
+        orientation: "vertical"
+        padding: (200, 150, 200, 150)
+        spacing: '5dp'
+
+
+        MDTextField:
+            id: username
+            hint_text: "Username"
+            icon_right: 'account'
+            font_size: '20dp'
+            size_hint_x: .85
+            pos_hint: {'center_x': 0.5}
+            on_text: self.text = self.text.replace(" ", "")
+            write_tab: False
+
+        MDTextField:
+            id: passwd
+            hint_text: "Password"
+            password: True
+            icon_right: 'eye-off'
+            font_size: '20dp'
+            size_hint_x: .85
+            pos_hint: {'center_x': 0.5}
+            on_text: self.text = self.text.replace(" ", "")
+            write_tab: False
+
+        BoxLayout:
+            size_hint: .85, None
+            height: "30dp"
+            spacing: '5dp'
+            pos_hint: {'center_x': 0.5}
+
+            MDCheckbox:
+                id: cb
+                size_hint: None, None
+                width: '30dp'
+                height: '30dp'
+                pos_hint: {'center_x': 0.5}
+                on_press:
+                    passwd.password = False if passwd.password == True else True
+                    passwd.icon_right = "eye" if passwd.icon_right == "eye-off" else "eye-off"
+
+            MDLabel:
+                text: "[ref=Show Password]Show Password[/ref]"
+                markup: True
+                pos_hint: {'center_x': 0.5}
+                on_ref_press:
+                    cb.active = False if cb.active == True else True
+                    passwd.password = False if passwd.password == True else True
+                    passwd.icon_right = "eye" if passwd.icon_right == "eye-off" else "eye-off"
+
+        MDFlatButton:
+            text: "SIGN IN"
+            font_size: '22dp'
+            size_hint_x: .4
+            md_bg_color: '#FF5623'
+            pos_hint: {'center_x': 0.5}
+            on_press:
+                root.manager.current = "dashboard_window" if root.check_username_and_password() else "login_window"
+                root.manager.transition.direction = "left"
+
+        MDFlatButton:
+            text: "BACK"
+            font_size: '22dp'
+            size_hint_x: .4
+            md_bg_color: '#ADACAC'
+            pos_hint: {'center_x': 0.5}
+            on_press:
+                root.manager.current = "welcome_window"
+                root.manager.transition.direction = "right"
+
+        MDLabel:
+            id: error
+            color: "red"
+            font_size: '20dp'
+            size_hint_x: .7
+            halign: 'center'
+            pos_hint: {'center_x': 0.5}
+            text: ""
+
+
+<DashboardWindow>:
+    name: "dashboard_window"
+
+    on_enter:
+        root.say_hello()
+        root.update_spinner()
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: (200, 150, 150, 200)
+        spacing: "50dp"
+
+        MDLabel:
+            id: welcome
+            color: "#FF5623"
+            font_size: "30dp"
+            size_hint_x: 1
+            halign: 'center'
+            pos_hint: {'center_x': 0.5}
+            text: ""
+
+        Spinner:
+            id: spinner_id
+            font_size: '22dp'
+            size_hint_x: .8
+            # background_normal: ""
+            # background_color: (173/255, 172/255, 172/255, 1)
+            pos_hint: {'center_x': 0.5}
+            text: "Click here to select category"
+            values: []
+            on_text: root.update_category(spinner_id.text)
+
+
+        MDFlatButton:
+            text: "START"
+            font_size: '30dp'
+            size_hint_x: .4
+            md_bg_color: '#FF5623'
+            pos_hint: {'center_x': 0.5}
+            on_press:
+                root.start_button_clicked()
+                root.manager.transition.direction = "left"
+
+        Label:
+            id: error_message
+            color: "red"
+            font_size: 30
+            size_hint: (1, 0.4)
+            text: ""
+
+<ChatGPT>
+    auto_dismiss: False
+    title: "Chat GPT answer"
+    size_hint: 0.6, 0.4
+    pos_hint: {"x": 0.15, "y": 0.4}
+    padding: (10, 10, 10, 10)
+    spacing: 10
+
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            id: message
+            text: ""
+            halign: 'center'
+            valign: 'middle'
+            text_size: (self.width, None)
+            font_size: 24
+
+        Button:
+            text: "Close"
+            font_size: 24
+            size_hint: 1, 0.4
+            on_release: root.dismiss()
+
+<GameWindow>:
+    name: "game_window"
+
+    canvas.before:
+        Rectangle:
+            source: 'background.png'
+            pos: self.pos
+            size: self.size
+
+    on_enter:
+        root.get_questions()
+        root.set_game()
+
+    BoxLayout:
+        orientation: 'horizontal'
+        padding: (20, 20, 20, 20)
+        spacing: 20
+
+        BoxLayout:
+            orientation: 'vertical'
+            padding: (10, 10, 10, 10)
+            spacing: 20
+
+            BoxLayout:
+                orientation: 'horizontal'
+                padding: (20, 20, 20, 20)
+                spacing: 20
+                size_hint: (1, 0.3)
+
+                Button:
+                    id: start
+                    text: "Start Game"
+                    disabled: True
+                    on_press:
+                        root.update_labels()
+                        root.start_game()
+
+                Button:
+                    id: quit
+                    text: "Quit Game"
+                    on_press: root.quit()
+
+
+                Label:
+                    id: timer
+                    text: ""
+                    font_size: 50
+                    font_name: "digital-7.ttf"
+
+
+
+                Button:
+                    id: halving
+                    text: "50:50"
+                    background_color: (1,1,1,0.9)
+                    on_press: root.halving()
+
+                Button:
+                    id: GPT
+                    text: "Chat GPT"
+                    background_color: (1,1,1,0.9)
+
+                    on_press: root.get_response()
+                    on_release: GPT.disabled = True
+
+            Label:
+                id: question
+                font_size: 30
+                text: ""
+                halign: 'center'
+                valign: 'middle'
+                text_size: (600, None)
+
+            GridLayout:
+                spacing: 10
+                padding: (10, 10, 10, 10)
+                cols: 2
+
+                Button:
+                    id: button_one
+                    text: ""
+                    background_color: (1,1,1,0.9)
+                    font_size: 20
+                    halign: 'center'
+                    valign: 'middle'
+                    text_size: (350, None)
+                    on_press: root.button_clicked(button_one.text)
+
+                Button:
+                    id: button_two
+                    text: ""
+                    background_color: (1,1,1,0.9)
+                    font_size: 20
+                    halign: 'center'
+                    valign: 'middle'
+                    text_size: (350, None)
+                    on_press: root.button_clicked(button_two.text)
+
+                Button:
+                    id: button_three
+                    text: ""
+                    background_color: (1,1,1,0.9)
+                    font_size: 20
+                    halign: 'center'
+                    valign: 'middle'
+                    text_size: (350, None)
+                    on_press: root.button_clicked(button_three.text)
+
+                Button:
+                    id: button_four
+                    text: ""
+                    background_color: (1,1,1,0.9)
+                    font_size: 20
+                    halign: 'center'
+                    valign: 'middle'
+                    text_size: (350, None)
+                    on_press: root.button_clicked(button_four.text)
+
+        BoxLayout:
+            orientation: 'vertical'
+            padding: (20, 20, 20, 20)
+            spacing: 20
+            size_hint: (0.15, 1)
+            background_color: (0,0,0,0.8)
+            canvas.before:
+                Color:
+                    rgba: self.background_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+            Label:
+                id: fifteen
+                text: "15"
+            Label:
+                id: fourteen
+                text: "14"
+            Label:
+                id: thirteen
+                text: "13"
+            Label:
+                id: twelve
+                text: "12"
+            Label:
+                id: eleven
+                text: "11"
+            Label:
+                id: second_level
+                text: "Second level"
+            Label:
+                id: ten
+                text: "10"
+            Label:
+                id: nine
+                text: "9"
+            Label:
+                id: eight
+                text: "8"
+            Label:
+                id: seven
+                text: "7"
+            Label:
+                id: six
+                text: "6"
+            Label:
+                id: first_level
+                text: "First level"
+            Label:
+                id: five
+                text: "5"
+            Label:
+                id: four
+                text: "4"
+            Label:
+                id: three
+                text: "3"
+            Label:
+                id: two
+                text: "2"
+            Label:
+                id: one
+                text: "1"
+
+<GameOverWindow>:
+    name: "game_over_window"
+
+    on_enter: root.get_user_results()
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: (200, 50, 200, 50)
+        spacing: "5dp"
+
+        MDLabel:
+            font_size: '40dp'
+            color: '#FF5623'
+            halign: 'center'
+            valign: 'middle'
+            pos_hint: {'center_x': 0.5}
+            text: "Game Over"
+
+        MDLabel:
+            font_size: '30dp'
+            color: '#FF5623'
+            halign: 'center'
+            pos_hint: {'center_x': 0.5}
+            text: "User Results"
+
+        ScrollView:
+
+            MDList:
+                id: result_list
+                size_hint_x: .8
+                pos_hint: {'center_x': 0.5}
+
+        MDFlatButton:
+            text: "NEW GAME"
+            font_size: '22dp'
+            size_hint_x: .4
+            md_bg_color: '#FF5623'
+            pos_hint: {'center_x': 0.5}
+            on_press:
+                root.manager.current = "dashboard_window"
+                root.manager.transition.direction = "right"
+
