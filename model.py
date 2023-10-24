@@ -65,14 +65,14 @@ class Model:
 
         self.conn.commit()
 
-    def save_results(self, user_id, result, category, date):
+    def save_results(self, user_id, result, category, date) -> None:
         self.curs.execute(f"SELECT id FROM categories WHERE category = '{category}'")
         category_id = self.curs.fetchone()[0]
         self.curs.execute(f"INSERT INTO results (user_id, result, category_id, date) "
                           f"VALUES ('{user_id}', '{result}', '{category_id}', '{date}')")
         self.conn.commit()
 
-    def save_question(self, user_num, question, answer, correct_or_not, date):
+    def save_question(self, user_num, question, answer, correct_or_not, date) -> None:
         self.curs.execute(f"SELECT id FROM questions WHERE question = '{question}'")
         question_num = self.curs.fetchone()[0]
         self.curs.execute(f"INSERT INTO users_questions (user_id, question_id, answer, correct_or_not, date) "
